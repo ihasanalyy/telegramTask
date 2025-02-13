@@ -8,13 +8,15 @@ dotenv.config()
 
 const app = express();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json()); // Body parser ki jagah
+
 
 
 app.use("/", botRoutes);
 
 
-const PORT = process.env.PORT 
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     connectDB()

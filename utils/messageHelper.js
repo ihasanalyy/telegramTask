@@ -61,7 +61,7 @@ export const updateLastMessage = async (chatId, lastMessage) => {
 };
 
  export async function sendButtons(chatId, Buttons,text, lastMessage) {
-    console.log("we are in sendButtons")
+    console.log("we are in sendButtons", lastMessage)
     try {
         const response = await axios.post(`${teleGramAPI}/sendMessage`, {
             chat_id: chatId,
