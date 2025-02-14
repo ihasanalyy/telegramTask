@@ -553,7 +553,7 @@ export async function registerUser(chatId, payload, chat) {
             [{ text: "Invite Someone", callback_data: "invite_someone" }],
             [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
-        await sendButtons(chatId, message, buttons, "register_0")
+        await sendButtons(chatId, buttons, message, "register_0")
     }
     else if ((chat.last_message?.startsWith("send_a_quote")) || (payload?.startsWith("send_a_quote")) || (payload === "send_a_quote")) {
         console.log("we are in send a quote");
@@ -562,7 +562,7 @@ export async function registerUser(chatId, payload, chat) {
             [{ text: "Create Quote", callback_data: "create_quote" }],
             [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
-        await sendButtons(chatId, message, buttons, "register_0")
+        await sendButtons(chatId, buttons, message, "register_0")
     }
     else if ((chat.last_message?.startsWith("send_crypto")) || (payload?.startsWith("send_crypto")) || (payload === "send_crypto")) {
         console.log("we are in send crypto");
@@ -570,6 +570,6 @@ export async function registerUser(chatId, payload, chat) {
         const buttons = [
             [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
-        await sendButtons(chatId, message, buttons, "register_0")
+        await sendButtons(chatId, buttons, message, "register_0")
     }
 }
