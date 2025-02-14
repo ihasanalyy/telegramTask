@@ -1,6 +1,6 @@
 
 
-// import { text } from "body-parser";
+
 import { sendPhoto, sendMessage, sendButtons } from "../utils/messageHelper.js";
 
 
@@ -69,7 +69,7 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "wallets_0");
     }
-    
+
     else if ((chat.last_message?.startsWith("wallet_overview")) || (payload?.startsWith("wallet_overview")) || (payload === "wallet_overview")) {
         console.log("we are in wallet overview");
         const message = "🇵🇰 Wallet Currency: PKR\n💳 Wallet ID: 5RMIOSO7\n💰 Wallet Balance: Rs0.00";
@@ -99,7 +99,7 @@ export async function registerUser(chatId, payload, chat) {
         const message = "This payout channel is not available at the moment.";
         const buttons = [
             [{ text: "Change Method", callback_data: "add_funds" }],
-            [{ text: "Main Menu", callback_data: "main_menu"}],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
         await sendButtons(chatId, buttons, message, "register_0");
     }
@@ -108,7 +108,7 @@ export async function registerUser(chatId, payload, chat) {
         const message = "This payout channel is not available at the moment.";
         const buttons = [
             [{ text: "Change Method", callback_data: "add_funds" }],
-            [{ text: "Main Menu", callback_data: "main_menu"}],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
         await sendButtons(chatId, buttons, message, "register_0");
     }
@@ -117,7 +117,7 @@ export async function registerUser(chatId, payload, chat) {
         const message = "This payout channel is not available at the moment.";
         const buttons = [
             [{ text: "Change Method", callback_data: "add_funds" }],
-            [{ text: "Main Menu", callback_data: "main_menu"}],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
         await sendButtons(chatId, buttons, message, "register_0");
     }
@@ -127,7 +127,7 @@ export async function registerUser(chatId, payload, chat) {
         const messageMain = "Click below to log in now.";
         const buttons = [
             [{ text: "Login", callback_data: "log_in" }],
-            [{ text: "Main Menu", callback_data: "main_menu"}],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
         await sendMessage(chatId, messageLogin, "register_0");
         await sendButtons(chatId, buttons, messageMain, "register_0");
@@ -141,7 +141,7 @@ export async function registerUser(chatId, payload, chat) {
             [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
         await sendButtons(chatId, buttons, message, "register_0")
-    }else if ((chat.last_message?.startsWith("add_currency")) || (payload?.startsWith("add_currency")) || (payload === "add_currency")) {
+    } else if ((chat.last_message?.startsWith("add_currency")) || (payload?.startsWith("add_currency")) || (payload === "add_currency")) {
         console.log("we are in add currency");
         const message = "Select your preferred Wallet";
         const buttons = [
@@ -231,6 +231,275 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "register_0")
     }
+    // languages view pages logics
+    else if ((chat.last_message?.startsWith("language_change")) || (payload?.startsWith("language_change")) || (payload === "language_change")) {
+        console.log("we are in language change");
+        const message = "Please select the language";
+        const buttons = [
+            [{ text: "English", callback_data: "english_lang" }],
+            [{ text: "Spanish", callback_data: "spanish_lang" }],
+            [{ text: "French", callback_data: "french_lang" }],
+            [{ text: "German", callback_data: "german_lang" }],
+            [{ text: "Hindi", callback_data: "hindi_lang" }],
+            [{ text: "Chinese", callback_data: "chinese_lang" }],
+            [{ text: "View More", callback_data: "view_more_pg1" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("view_more_pg1")) || (payload?.startsWith("view_more_pg1")) || (payload === "view_more_pg1")) {
+        console.log("we are in view more");
+        const message = "Please select the language";
+        const buttons = [
+            [{ text: "🔙", callback_data: "language_change" }],
+            [{ text: "Indonesian", callback_data: "indonesian_lang" }],
+            [{ text: "Italian", callback_data: "italian_lang" }],
+            [{ text: "Sawahili", callback_data: "sawahili_lang" }],
+            [{ text: "Dutch", callback_data: "dutch_lang" }],
+            [{ text: "Yoruba", callback_data: "yoruba_lang" }],
+            [{ text: "Urdu", callback_data: "urdu_lang" }],
+            [{ text: "View More", callback_data: "view_more_pg2" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("view_more_pg2")) || (payload?.startsWith("view_more_pg2")) || (payload === "view_more_pg2")) {
+        console.log("we are in view more");
+        const message = "Please select the language";
+        const buttons = [
+            [{ text: "🔙", callback_data: "view_more_pg1" }],
+            [{ text: "Polish", callback_data: "polish_lang" }],
+            [{ text: "Hausa", callback_data: "hausa_lang" }],
+            [{ text: "Portuguese", callback_data: "portuguese_lang" }],
+            [{ text: "Russian", callback_data: "russian_lang" }],
+            [{ text: "Turkish", callback_data: "turkish_lang" }],
+            [{ text: "Ukrainian", callback_data: "ukrainian_lang" }],
+            [{ text: "Arabic", callback_data: "arabic_lang" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }]
+        ];
 
-}  
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    // languages logics selected by user 
+    else if ((chat.last_message?.startsWith("english_lang")) || (payload?.startsWith("english_lang")) || (payload === "english_lang")) {
+        console.log("we are in english");
+        const message = "Language changed to English";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("urdu_lang")) || (payload?.startsWith("urdu_lang")) || (payload === "urdu_lang")) {
+        console.log("we are in urdu");
+        const message = "Language changed to Urdu";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("spanish_lang")) || (payload?.startsWith("spanish_lang")) || (payload === "spanish_lang")) {
+        console.log("we are in spanish");
+        const message = "Language changed to Spanish";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("french_lang")) || (payload?.startsWith("french_lang")) || (payload === "french_lang")) {
+        console.log("we are in french");
+        const message = "Language changed to French";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("german_lang")) || (payload?.startsWith("german_lang")) || (payload === "german_lang")) {
+        console.log("we are in german");
+        const message = "Language changed to German";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("hindi_lang")) || (payload?.startsWith("hindi_lang")) || (payload === "hindi_lang")) {
+        console.log("we are in hindi");
+        const message = "Language changed to Hindi";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("chinese_lang")) || (payload?.startsWith("chinese_lang")) || (payload === "chinese_lang")) {
+        console.log("we are in chinese");
+        const message = "Language changed to Chinese";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("indonesian_lang")) || (payload?.startsWith("indonesian_lang")) || (payload === "indonesian_lang")) {
+        console.log("we are in indonesian");
+        const message = "Language changed to Indonesian";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("italian_lang")) || (payload?.startsWith("italian_lang")) || (payload === "italian_lang")) {
+        console.log("we are in italian");
+        const message = "Language changed to Italian";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("sawahili_lang")) || (payload?.startsWith("sawahili_lang")) || (payload === "sawahili_lang")) {
+        console.log("we are in sawahili");
+        const message = "Language changed to Sawahili";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("dutch_lang")) || (payload?.startsWith("dutch_lang")) || (payload === "dutch_lang")) {
+        console.log("we are in dutch");
+        const message = "Language changed to Dutch";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("yoruba_lang")) || (payload?.startsWith("yoruba_lang")) || (payload === "yoruba_lang")) {
+        console.log("we are in yoruba");
+        const message = "Language changed to Yoruba";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("polish_lang")) || (payload?.startsWith("polish_lang")) || (payload === "polish_lang")) {
+        console.log("we are in polish");
+        const message = "Language changed to Polish";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("hausa_lang")) || (payload?.startsWith("hausa_lang")) || (payload === "hausa_lang")) {
+        console.log("we are in hausa");
+        const message = "Language changed to Hausa";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("portuguese_lang")) || (payload?.startsWith("portuguese_lang")) || (payload === "portuguese_lang")) {
+        console.log("we are in portuguese");
+        const message = "Language changed to Portuguese";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("russian_lang")) || (payload?.startsWith("russian_lang")) || (payload === "russian_lang")) {
+        console.log("we are in russian");
+        const message = "Language changed to Russian";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("turkish_lang")) || (payload?.startsWith("turkish_lang")) || (payload === "turkish_lang")) {
+        console.log("we are in turkish");
+        const message = "Language changed to Turkish";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("ukrainian_lang")) || (payload?.startsWith("ukrainian_lang")) || (payload === "ukrainian_lang")) {
+        console.log("we are in ukrainian");
+        const message = "Language changed to Ukrainian";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("arabic_lang")) || (payload?.startsWith("arabic_lang")) || (payload === "arabic_lang")) {
+        console.log("we are in arabic");
+        const message = "Language changed to Arabic";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    // my transactions logics here
+    else if ((chat.last_message?.startsWith("my_transactions")) || (payload?.startsWith("my_transactions")) || (payload === "my_transactions")) {
+        console.log("we are in my transactions");
+        const message = `
+📌 Transaction ID: TXN001  
+📅 Date: 14-Feb-2025 | 🕒 Time: 10:30 AM  
+💰 Amount: +1,500 PKR  
+✅ Status: Successful  
+📝 Description: Salary Deposit  
 
+📌 Transaction ID: TXN002  
+📅 Date: 13-Feb-2025 | 🕒 Time: 3:45 PM  
+💰 Amount: -500 PKR  
+✅ Status: Successful  
+📝 Description: Bill Payment - Electricity  
+
+📌 Transaction ID: TXN003  
+📅 Date: 12-Feb-2025 | 🕒 Time: 11:10 AM  
+💰 Amount: -200 PKR  
+❌ Status: Failed  
+📝 Description: Mobile Top-up  
+
+📌 Transaction ID: TXN004  
+📅 Date: 11-Feb-2025 | 🕒 Time: 9:00 AM  
+💰 Amount: +10,000 PKR  
+✅ Status: Successful  
+📝 Description: Freelance Payment  
+
+📌 Transaction ID: TXN005  
+📅 Date: 10-Feb-2025 | 🕒 Time: 7:15 PM  
+💰 Amount: -1,200 PKR  
+✅ Status: Successful  
+📝 Description: Shopping - Groceries  
+
+📌 Transaction ID: TXN006  
+📅 Date: 09-Feb-2025 | 🕒 Time: 5:25 PM  
+💰 Amount: -300 PKR  
+⏳ Status: Pending  
+📝 Description: Online Subscription  
+
+📌 Transaction ID: TXN007  
+📅 Date: 08-Feb-2025 | 🕒 Time: 2:50 PM  
+💰 Amount: +8,000 PKR  
+✅ Status: Successful  
+📝 Description: Friend Transfer  
+
+📌 Transaction ID: TXN008  
+📅 Date: 07-Feb-2025 | 🕒 Time: 4:30 PM  
+💰 Amount: -650 PKR  
+✅ Status: Successful  
+📝 Description: Food Delivery  
+
+📌 Transaction ID: TXN009  
+📅 Date: 06-Feb-2025 | 🕒 Time: 1:00 PM  
+💰 Amount: -2,500 PKR  
+❌ Status: Failed  
+📝 Description: Flight Booking  
+
+📌 Transaction ID: TXN010  
+📅 Date: 05-Feb-2025 | 🕒 Time: 10:00 AM  
+💰 Amount: +4,500 PKR  
+✅ Status: Successful  
+📝 Description: Bonus Reward  
+    `;
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+}
