@@ -502,4 +502,74 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "register_0")
     }
+    // iniate payment logics here
+    else if ((chat.last_message?.startsWith("initiate_payment")) || (payload?.startsWith("initiate_payment")) || (payload === "initiate_payment")) {
+        console.log("we are in initiate payment");
+        const message = "How can I serve you today?🤔👇";
+        const buttons = [
+            [{ text: "Send Money", callback_data: "send_money" }],
+            [{ text: "Request Money", callback_data: "request_money" }],
+            [{ text: "Send a Quote", callback_data: "send_a_quote" }],
+            [{ text: "Send Crypto", callback_data: "send_crypto" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("send_money")) || (payload?.startsWith("send_money")) || (payload === "send_money")) {
+        console.log("we are in send money");
+        const messageInt = "Send Mnoey Internationally to over 130 countries: Security and simplicity for your international transfers.";
+        const buttonsInt = [
+            [{ text: "International Transfer", callback_data: "international_transfer" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttonsInt, messageInt, "register_0")
+
+        const messageWallet = "Wallet to Wallet Transfer: Instantly exchange funds between users.";
+        const buttonsWallet = [
+            [{ text: "Wallet to Wallet", callback_data: "wallet_to_wallet" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttonsWallet, messageWallet, "register_0")
+
+        const messageAirTime = "Secure and fast international mobile top-ups";
+        const buttonsAirTime = [
+            [{ text: "Mobile airtime", callback_data: "mobile_airtime" }],
+        ];
+        await sendButtons(chatId, buttonsAirTime, messageAirTime, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("request_money")) || (payload?.startsWith("request_money")) || (payload === "request_money")) {
+        console.log("we are in request money");
+        const message = `
+                        Who would you like to request money from today?
+                        Enter the InstaPay/Instagram username, mobile number, or email, or select from frequently contacted users.
+
+                        Please follow these examples:
+
+                        👤 InstaPay/Instagram Username: instauser
+                        📧 Email: user@email.com
+                        📞 Phone Number: 44795396600 (With Country Code)
+                        `;
+        const buttons = [
+            [{ text: "Invite Someone", callback_data: "invite_someone" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, message, buttons, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("send_a_quote")) || (payload?.startsWith("send_a_quote")) || (payload === "send_a_quote")) {
+        console.log("we are in send a quote");
+        const message = "Ready to sendReady to send a quote? Let's get the details right to ensure a smooth transaction.";
+        const buttons = [
+            [{ text: "Create Quote", callback_data: "create_quote" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, message, buttons, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("send_crypto")) || (payload?.startsWith("send_crypto")) || (payload === "send_crypto")) {
+        console.log("we are in send crypto");
+        const message = "Unlock the future of finance -\n cryptocurrency integration coming soon!";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, message, buttons, "register_0")
+    }
 }
