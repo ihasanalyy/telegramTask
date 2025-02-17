@@ -572,4 +572,36 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "register_0")
     }
+    // request a money logics here
+    else if ((chat.last_message?.startsWith("invite_someone")) || (payload?.startsWith("invite_someone")) || (payload === "invite_someone")) {
+        console.log("we are in invite someone");
+        const message = "How would you like to invite?\n\nBy: 👇";
+        const buttons = [
+            [{ text: "📞 Phone Number", callback_data: "phone_number" }],
+            [{ text: "📧 Email", callback_data: "email_btn" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("phone_number")) || (payload?.startsWith("phone_number")) || (payload === "phone_number")) {
+        console.log("we are in phone number");
+        const message = "Input your phone number. Example: +923001234567";
+        await sendMessage(chatId, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("email_btn")) || (payload?.startsWith("email_btn")) || (payload === "email_btn")) {
+        console.log("we are in email");
+        const message = "Input the email address you want to invite."
+        await sendMessage(chatId, message, "register_0")
+    }
+    // phone number received from user logics here 
+    else if (chat.last_message?.startsWith("register_0") && chat.last_message?.includes("Input your phone number. Example: +923001234567")) {
+        console.log("we are in phone number received");
+        const message = "Please enter the amount you want to request.";
+        await sendMessage(chatId, message, "register_0")
+    }
+    // email received from user logics here 
+    else if (chat.last_message?.startsWith("register_0") && chat.last_message?.includes("Input the email address you want to invite.")) {
+        console.log("we are in email received");
+        const message = "Please enter the amount you want to request.";
+        await sendMessage(chatId, message, "register_0")
+    }
 }
