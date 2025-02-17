@@ -1,6 +1,6 @@
 
 // import TelegramBot from '../models/User.js';
-import User, {TelegramBot } from "../models/User.js"; // Import User model
+import User, { TelegramBot } from "../models/User.js"; // Import User model
 // import { registerUserCallback } from './authController.js';
 import { sendPhoto, sendMessage, sendButtons } from "../utils/messageHelper.js";
 // import axios from 'axios';
@@ -41,8 +41,8 @@ export const handleUpdates = async (req, res) => {
 
     //  Save new last_message to prevent repeat responses
     if (chat) {
-        console.log(text_message , "text chat wala")
-        chat.last_message = text_message || callback_query || "unknown";
+        console.log(text_message, "text chat wala")
+        chat.last_message = text_message || "unknown";
         chat.last_message_time = currentTime;
         await chat.save();
     } else {
@@ -63,10 +63,174 @@ export const handleUpdates = async (req, res) => {
             [{ text: "Change Language", callback_data: "language_change" }],
         ];
         await sendPhoto(chatId, "https://cdn.pixabay.com/photo/2023/01/08/14/22/sample-7705350_640.jpg");
-        await sendButtons(chatId,buttons , "Welcome onboard!");
+        await sendButtons(chatId, buttons, "Welcome onboard!");
     } else if (callback_query) {
         console.log("Handling callback query:", callback_query);
         registerUser(chatId, callback_query, chat);
+    }
+
+    // yahan se
+    // else if ((chat.last_message?.startsWith("initiate_payment")) || (callback_query?.startsWith("initiate_payment")) || (callback_query === "initiate_payment")) {
+    //     console.log("we are in initiate payment");
+    //     const message = "How can I serve you today?🤔👇";
+    //     const buttons = [
+    //         [{ text: "Send Money", callback_data: "send_money" }],
+    //         [{ text: "Request Money", callback_data: "request_money" }],
+    //         [{ text: "Send a Quote", callback_data: "send_a_quote" }],
+    //         [{ text: "Send Crypto", callback_data: "send_crypto" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("send_money")) || (callback_query?.startsWith("send_money")) || (callback_query === "send_money")) {
+    //     console.log("we are in send money");
+    //     const messageInt = "Send Mnoey Internationally to over 130 countries: Security and simplicity for your international transfers.";
+    //     const buttonsInt = [
+    //         [{ text: "International Transfer", callback_data: "international_transfer" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttonsInt, messageInt, "register_0")
+
+    //     const messageWallet = "Wallet to Wallet Transfer: Instantly exchange funds between users.";
+    //     const buttonsWallet = [
+    //         [{ text: "Wallet to Wallet", callback_data: "wallet_to_wallet" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttonsWallet, messageWallet, "register_0")
+
+    //     const messageAirTime = "Secure and fast international mobile top-ups";
+    //     const buttonsAirTime = [
+    //         [{ text: "Mobile airtime", callback_data: "mobile_airtime" }],
+    //     ];
+    //     await sendButtons(chatId, buttonsAirTime, messageAirTime, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("request_money")) || (callback_query?.startsWith("request_money")) || (callback_query === "request_money")) {
+    //     console.log("we are in request money");
+    //     const message = `
+    //                     Who would you like to request money from today?
+    //                     Enter the InstaPay/Instagram username, mobile number, or email, or select from frequently contacted users.
+
+    //                     Please follow these examples:
+
+    //                     👤 InstaPay/Instagram Username: instauser
+    //                     📧 Email: user@email.com
+    //                     📞 Phone Number: 44795396600 (With Country Code)
+    //                     `;
+    //     const buttons = [
+    //         [{ text: "Invite Someone", callback_data: "invite_someone" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("send_a_quote")) || (callback_query?.startsWith("send_a_quote")) || (callback_query === "send_a_quote")) {
+    //     console.log("we are in send a quote");
+    //     const message = "Ready to sendReady to send a quote? Let's get the details right to ensure a smooth transaction.";
+    //     const buttons = [
+    //         [{ text: "Create Quote", callback_data: "create_quote" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("send_crypto")) || (callback_query?.startsWith("send_crypto")) || (callback_query === "send_crypto")) {
+    //     console.log("we are in send crypto");
+    //     const message = "Unlock the future of finance -\n cryptocurrency integration coming soon!";
+    //     const buttons = [
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    // // request a money logics here
+    // else if ((chat.last_message?.startsWith("invite_someone")) || (callback_query?.startsWith("invite_someone")) || (callback_query === "invite_someone")) {
+    //     console.log("we are in invite someone");
+    //     const message = "How would you like to invite?\n\nBy: 👇";
+    //     const buttons = [
+    //         [{ text: "📞 Phone Number", callback_data: "phone_number" }],
+    //         [{ text: "📧 Email", callback_data: "email_btn" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("phone_number")) || (callback_query?.startsWith("phone_number")) || (callback_query === "phone_number")) {
+    //     console.log("we are in phone number");
+    //     const message = "Input your phone number. Example: +923001234567";
+    //     await sendMessage(chatId, message, "register_0")
+    // }
+    // else if ((chat.last_message?.startsWith("email_btn")) || (callback_query?.startsWith("email_btn")) || (callback_query === "email_btn")) {
+    //     console.log("we are in email");
+    //     const message = "Input the email address you want to invite."
+    //     await sendMessage(chatId, message, "register_0")
+    // }
+    // // phone number received from user logics here 
+    else if (chat.text?.trim().startsWith("+923001234567") || chat.last_message?.trim().includes("+923001234567") || (chat.last_message === "+923001234567")) {
+
+        console.log("we are in phone number received");
+        const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
+        const buttons = [
+            [{ text: "Send Invitation", callback_data: "send_invitation" }],
+            [{ text: "Personalize Message", callback_data: "personalize_message" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if (chat.last_message?.startsWith("abc@gmail.com") && chat.last_message?.includes("abc@gmail.com")) {
+
+        console.log("we are in email received");
+        const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
+        const buttons = [
+            [{ text: "Send Invitation", callback_data: "send_invitation" }],
+            [{ text: "Personalize Message", callback_data: "personalize_message" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if (chat.last_message?.startsWith("ibilalansari") && chat.last_message?.includes("ibilalansari") || (chat.last_message === "ibilalansari") || (chat.last_message === "ibilalansari@gmail.com") || (chat.last_message === "+923112047859")) {
+
+        console.log("we are in email received");
+        const message = `(profile URL) M Bilal Ansari\n Username: ibilalansari\n Country: Pakistan`;
+        const buttons = [
+            [{ text: "Continue", callback_data: "continue_with_user" }],
+            [{ text: "View profile", callback_data: "view_profile" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+        const messageOption = `Or select preferred option below`;
+        const buttonsOption = [
+            [{ text: "Choose another", callback_data: "request_money" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttonsOption, messageOption, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("150") || chat.last_message?.includes("150")) && chat.last_message >= 150) {
+        console.log("we are in currency send money");
+        const message = "Completing this transaction will exceed your balance limit of 13,505.30 PKR. Please enter an amount within your balance limit or complete KYC verification to increase your balance limit.";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+            [{ text: "Identity Verification", callback_data: "identity_verification" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0");
+    }
+    else if ((chat.last_message?.startsWith("10") || chat.last_message?.includes("10")) && chat.last_message < 150 ) {
+        console.log("we are in currency send money");
+        const message = "What's your transaction today? Choose the type of payment request that works for you:";
+       
+        await sendMessage(chatId, message, "register_0");
+       const message1 = "Simple, immediate, and secure daily transactions.";
+       const message2 = "Stop chasing payments,opt for automatic debiting!";
+       const message3 = "Receive your payments on time, no more waiting!";
+
+        const buttons1 = [
+            [{ text: "Instant", callback_data: "instant" }],
+            [{ text: "Back", callback_data: "request_money" }],
+        ];
+        const buttons2 = [
+            [{ text: "Subscription", callback_data: "subscription" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        const buttons3 = [
+            [{ text: "Schedule", callback_data: "schedule" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons1, message1, "register_0");
+        await sendButtons(chatId, buttons2, message2, "register_0");
+        await sendButtons(chatId, buttons3, message3, "register_0");
     }
 
     return res.sendStatus(200); // ✅ Respond with 200 OK to prevent Telegram retries

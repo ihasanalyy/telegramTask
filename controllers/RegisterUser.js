@@ -539,15 +539,7 @@ export async function registerUser(chatId, payload, chat) {
     }
     else if ((chat.last_message?.startsWith("request_money")) || (payload?.startsWith("request_money")) || (payload === "request_money")) {
         console.log("we are in request money");
-        const message = `
-                        Who would you like to request money from today?
-                        Enter the InstaPay/Instagram username, mobile number, or email, or select from frequently contacted users.
-
-                        Please follow these examples:
-
-                        👤 InstaPay/Instagram Username: instauser
-                        📧 Email: user@email.com
-                        📞 Phone Number: 44795396600 (With Country Code)
+        const message = `Who would you like to request money from today?\nEnter the InstaPay/Instagram username, mobile number, or email,\nor select from frequently contacted users.\n\nPlease follow these examples:\n\n👤 InstaPay/Instagram Username: instauser\n📧 Email: user@email.com\n📞 Phone Number: 44795396600 (With Country Code)
                         `;
         const buttons = [
             [{ text: "Invite Someone", callback_data: "invite_someone" }],
@@ -593,21 +585,21 @@ export async function registerUser(chatId, payload, chat) {
         await sendMessage(chatId, message, "register_0")
     }
     // phone number received from user logics here 
-    else if (chat.last_message?.trim().startsWith("+923001234567") && chat.last_message?.trim().includes("+923001234567")) {
-        console.log("we are in phone number received");
-        const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
-        const buttons = [
-            [{ text: "Send Invitation", callback_data: "send_invitation" }],
-            [{ text: "Personalize Message", callback_data: "personalize_message" }],
-            [{ text: "Main Menu", callback_data: "main_menu" }],
-        ];
-        await sendButtons(chatId, buttons, message, "register_0")
-    }
-    else if ((chat.last_message?.startsWith("request_money")) || (payload?.startsWith("request_money")) || (payload === "request_money")) {
+    // else if (chat.last_message?.trim().startsWith("+923001234567") && chat.last_message?.trim().includes("+923001234567")) {
+    //     console.log("we are in phone number received");
+    //     const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
+    //     const buttons = [
+    //         [{ text: "Send Invitation", callback_data: "send_invitation" }],
+    //         [{ text: "Personalize Message", callback_data: "personalize_message" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    else if ((chat.last_message?.startsWith("send_invitation")) || (payload?.startsWith("send_invitation")) || (payload === "send_invitation")) {
         console.log("we are in send invitation");
-        const message = "Your invite to +923001234567 has been sent successfully!";
+        const message = "Your invite to +923001234567/abc@gmail.com has been sent successfully!";
         const messageRef = `Refer & Earn Money with the InstaPay Tiered Affiliation Program\n\n Unlock endless rewards with our Tiered Affiliation Program! Earn commissions based on the activity of your followers on INSTAPAY. The more they transact, the more you earn. Dive into the lucrative world of INSTAPAY and turn influence into affluence`;
-        const picture = "https://media.istockphoto.com/id/1313901506/photo/cropped-shot-of-an-african-american-young-woman-using-smart-phone-at-home-smiling-african.jpg?s=612x612&w=0&k=20&c=geSmPOcfVl3aJ13j4XIDG85LZVbOVPhYsCBJ1I0BVrk=";
+        // const picture = "https://media.istockphoto.com/id/1313901506/photo/cropped-shot-of-an-african-american-young-woman-using-smart-phone-at-home-smiling-african.jpg?s=612x612&w=0&k=20&c=geSmPOcfVl3aJ13j4XIDG85LZVbOVPhYsCBJ1I0BVrk=";
         const buttons = [
             [{ text: "Main Menu", callback_data: "main_menu" }],
         ];
@@ -616,14 +608,97 @@ export async function registerUser(chatId, payload, chat) {
             [{ text: "Track My Earning", callback_data: "track_my_earning" }],
             [{ text: "Learn More", callback_data: "learn_more" }],
         ];
-        await sendPhoto(chatId, picture,message,buttons)
+        await sendButtons(chatId, buttons, message, "register_0");
         await sendButtons(chatId, buttonsRef, messageRef, "register_0")
     }
-    // email received from user logics here 
-    else if (chat.last_message?.startsWith("abc@gmail.com") && chat.last_message?.includes("abc@gmail.com")) {
-        console.log("we are in email received");
-        const message = "Please enter the amount you want to request.";
+    else if ((chat.last_message?.startsWith("personalize_message")) || (payload?.startsWith("personalize_message")) || (payload === "personalize_message")) {
+        console.log("we are in personalize message");
+        const message = "Type your personalized message below:";
         await sendMessage(chatId, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("continue_with_user")) || (payload?.startsWith("continue_with_user")) || (payload === "continue_with_user")) {
+        console.log("we are in continue user");
+        const message = "Select the currency wallet for receiving the payment";
+        const buttons = [
+            [{ text: "🇵🇰 PKR", callback_data: "pkr_currency_recieve" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("pkr_currency_recieve")) || (payload?.startsWith("pkr_currency_recieve")) || (payload === "pkr_currency_recieve")) {
+        console.log("we are in pkr currency recieve");
+        const message = "Please enter the amount you're requesting. Example: 150";
+        const buttons = [
+            [{ text: "Another wallet", callback_data: "continue_with_user" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("identity_verification") && payload?.startsWith("identity_verification")) || (payload === "identity_verification")) {
+        console.log("we are in identity verification");
+        const message = `To verify your identity, please follow the below steps.\n\n1⃣ Login to InstaPay web portal.\n\n 2️⃣ Go to settings page and select "Identity verification" option from sub-menu.\n\n3⃣ Type in the requested information and click "Start verification" button.`;
+        const messageLogin = `Click below to log in now.`
+        const buttons = [
+            [{ text: "Login", callback_data: "login" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendMessage(chatId, message, "register_0");
+        await sendButtons(chatId, buttons, messageLogin, "register_0");
+    }
+    else if ((chat.last_message?.startsWith("instant") && payload?.startsWith("instant")) || (payload === "instant")) {
+        console.log("we are in login");
+        const message = "Would you like to add more details to this transaction?";
+        const buttons = [
+            [{ text: "Add a note", callback_data: "add_a_note" }],
+            [{ text: "Attach a document", callback_data: "attach_a_document" }],
+            [{ text: "Skip", callback_data: "skip" }],
+        ];
+       await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("add_a_note") && payload?.startsWith("add_a_note")) || (payload === "add_a_note")) {
+        console.log("we are in add a note");
+        const message = "Please type your message below. Add any details that help clarify your transaction.";
+        await sendMessage(chatId, message, "register_0")
+    }
+    // else if ((chat.last_message?.startsWith("attach_a_document") && payload?.startsWith("attach_a_document")) || (payload === "attach_a_document")) {
+    //     console.log("we are in attach a document");
+    //     const message = "Please attach the document for this transaction.";
+    //     await sendMessage(chatId, message, "register_0")
+    // }
+    else if ((chat.last_message?.startsWith("skip") && payload?.startsWith("skip")) || (payload === "skip")) {
+        console.log("we are in skip");
+        const message = "You're initiating a request for 10.00 PKR to M Bilal Ansari\n\nProceed?";
+        const buttons = [
+            [{ text: "Confirm", callback_data: "confirm" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("schedule") && payload?.startsWith("schedule")) || (payload === "schedule")) {
+        console.log("we are in skip");
+        const message = "Schedule your payment by specifying the date and time.";
+        const buttons = [
+            [{ text: "Select date & time", callback_data: "select_date_time" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("subscription") && payload?.startsWith("subscription")) || (payload === "subscription")) {
+        console.log("we are in skip");
+        const message = "Please set the start date for this subscription.";
+        const buttons = [
+            [{ text: "Select date", callback_data: "select_date" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("confirm") && payload?.startsWith("confirm")) || (payload === "confirm")) {
+        console.log("we are in confirm");
+        const message = "To send a payment request, please share your location--this helps us boost security and build trust for a smoother experience!";
+        const buttons = [
+            [{ text: "Share Location", callback_data: "share_location" }],
+            [{ text: "Cancel", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
     }
 
 }
