@@ -593,7 +593,7 @@ export async function registerUser(chatId, payload, chat) {
         await sendMessage(chatId, message, "register_0")
     }
     // phone number received from user logics here 
-    else if (chat.last_message?.startsWith("+923001234567") && chat.last_message?.includes("+923001234567")) {
+    else if (chat.last_message?.trim().startsWith("+923001234567") && chat.last_message?.trim().includes("+923001234567")) {
         console.log("we are in phone number received");
         const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
         const buttons = [
@@ -625,4 +625,5 @@ export async function registerUser(chatId, payload, chat) {
         const message = "Please enter the amount you want to request.";
         await sendMessage(chatId, message, "register_0")
     }
+
 }
