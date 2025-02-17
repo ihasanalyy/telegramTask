@@ -593,13 +593,34 @@ export async function registerUser(chatId, payload, chat) {
         await sendMessage(chatId, message, "register_0")
     }
     // phone number received from user logics here 
-    else if (chat.last_message?.startsWith("register_0") && chat.last_message?.includes("Input your phone number. Example: +923001234567")) {
+    else if (chat.last_message?.startsWith("+923001234567") && chat.last_message?.includes("+923001234567")) {
         console.log("we are in phone number received");
-        const message = "Please enter the amount you want to request.";
-        await sendMessage(chatId, message, "register_0")
+        const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
+        const buttons = [
+            [{ text: "Send Invitation", callback_data: "send_invitation" }],
+            [{ text: "Personalize Message", callback_data: "personalize_message" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("request_money")) || (payload?.startsWith("request_money")) || (payload === "request_money")) {
+        console.log("we are in send invitation");
+        const message = "Your invite to +923001234567 has been sent successfully!";
+        const messageRef = `Refer & Earn Money with the InstaPay Tiered Affiliation Program\n\n Unlock endless rewards with our Tiered Affiliation Program! Earn commissions based on the activity of your followers on INSTAPAY. The more they transact, the more you earn. Dive into the lucrative world of INSTAPAY and turn influence into affluence`;
+        const picture = "https://media.istockphoto.com/id/1313901506/photo/cropped-shot-of-an-african-american-young-woman-using-smart-phone-at-home-smiling-african.jpg?s=612x612&w=0&k=20&c=geSmPOcfVl3aJ13j4XIDG85LZVbOVPhYsCBJ1I0BVrk=";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        const buttonsRef = [
+            [{ text: "Share Referral Link", callback_data: "share_referral_link" }],
+            [{ text: "Track My Earning", callback_data: "track_my_earning" }],
+            [{ text: "Learn More", callback_data: "learn_more" }],
+        ];
+        await sendPhoto(chatId, picture,message,buttons)
+        await sendButtons(chatId, buttonsRef, messageRef, "register_0")
     }
     // email received from user logics here 
-    else if (chat.last_message?.startsWith("register_0") && chat.last_message?.includes("Input the email address you want to invite.")) {
+    else if (chat.last_message?.startsWith("abc@gmail.com") && chat.last_message?.includes("abc@gmail.com")) {
         console.log("we are in email received");
         const message = "Please enter the amount you want to request.";
         await sendMessage(chatId, message, "register_0")
