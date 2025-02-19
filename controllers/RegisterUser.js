@@ -7,6 +7,8 @@ import { sendPhoto, sendMessage, sendButtons } from "../utils/messageHelper.js";
 
 export async function registerUser(chatId, payload, chat) {
     console.log("we are in registerUSer foo")
+    console.log(chat.last_message, "register user inside")
+    // const currentStep = chat.last_message?.split("_")[1];
     // console.log(currentStep, "currentStep")
     console.log(payload, "payload aya kia")
 
@@ -66,6 +68,8 @@ export async function registerUser(chatId, payload, chat) {
             [{ text: "🔍 Explore More", callback_data: "explore_more" }],
             [{ text: "🌍 Change Language", callback_data: "language_change" }],
             [{ text: "💬 Chat with us", callback_data: "chat_with_us" }],
+            // temp button to start recieve req flow
+            [{ text: "🔐 Start Flow Recieve", callback_data: "recieve_request" }],
         ];
         await sendButtons(chatId, buttons, message, "wallets_0");
     }
@@ -584,17 +588,7 @@ export async function registerUser(chatId, payload, chat) {
         const message = "Input the email address you want to invite."
         await sendMessage(chatId, message, "register_0")
     }
-    // phone number received from user logics here 
-    // else if (chat.last_message?.trim().startsWith("+923001234567") && chat.last_message?.trim().includes("+923001234567")) {
-    //     console.log("we are in phone number received");
-    //     const message = `Hey, I thought you might be interested in using InstaPay! Here's my invite link.\n\n invitation_link_here`;
-    //     const buttons = [
-    //         [{ text: "Send Invitation", callback_data: "send_invitation" }],
-    //         [{ text: "Personalize Message", callback_data: "personalize_message" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
+    
     else if ((chat.last_message?.startsWith("send_invitation")) || (payload?.startsWith("send_invitation")) || (payload === "send_invitation")) {
         console.log("we are in send invitation");
         const message = "Your invite to +923001234567/abc@gmail.com has been sent successfully!";
@@ -645,7 +639,7 @@ export async function registerUser(chatId, payload, chat) {
         await sendButtons(chatId, buttons, messageLogin, "register_0");
     }
     else if ((chat.last_message?.startsWith("instant") && payload?.startsWith("instant")) || (payload === "instant")) {
-        console.log("we are in login");
+        console.log("we are in instant");
         const message = "Would you like to add more details to this transaction?";
         const buttons = [
             [{ text: "Add a note", callback_data: "add_a_note" }],
@@ -659,11 +653,11 @@ export async function registerUser(chatId, payload, chat) {
         const message = "Please type your message below. Add any details that help clarify your transaction.";
         await sendMessage(chatId, message, "register_0")
     }
-    // else if ((chat.last_message?.startsWith("attach_a_document") && payload?.startsWith("attach_a_document")) || (payload === "attach_a_document")) {
-    //     console.log("we are in attach a document");
-    //     const message = "Please attach the document for this transaction.";
-    //     await sendMessage(chatId, message, "register_0")
-    // }
+    else if ((chat.last_message?.startsWith("attach_a_document") && payload?.startsWith("attach_a_document")) || (payload === "attach_a_document")) {
+        console.log("we are in attach a document");
+        const message = "Please attach your document in an image or video format. You can only attach up to 4 images and 1 video, totaling 5 files.";
+        await sendMessage(chatId, message, "register_0")
+    }
     else if ((chat.last_message?.startsWith("skip") && payload?.startsWith("skip")) || (payload === "skip")) {
         console.log("we are in skip");
         const message = "You're initiating a request for 10.00 PKR to M Bilal Ansari\n\nProceed?";
@@ -691,6 +685,12 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "register_0")
     }
+    else if ((chat.last_message?.startsWith("yes_attach_a_document_req") && payload?.startsWith("yes_attach_a_document_req")) || (payload === "yes_attach_a_document_req")) {
+        console.log("we are in yes");
+        const message = "Please attach your document.";
+        // await sendButtons(chatId, buttons, message, "register_0")
+        await sendMessage(chatId, message, "register_0");
+    }
     else if ((chat.last_message?.startsWith("confirm") && payload?.startsWith("confirm")) || (payload === "confirm")) {
         console.log("we are in confirm");
         const message = "To send a payment request, please share your location--this helps us boost security and build trust for a smoother experience!";
@@ -700,5 +700,118 @@ export async function registerUser(chatId, payload, chat) {
         ];
         await sendButtons(chatId, buttons, message, "register_0")
     }
-
-}
+    // recieve a request logics here
+    else if ((chat.last_message?.startsWith("recieve_request")) || (payload?.startsWith("recieve_request")) || (payload === "recieve_request")) {
+        console.log("we are in recieve request");
+        const message = `You've received a Payment Request from M.Bilal\nRequest ID: rq_1234567890\nSender Name: M.Bilal\nAmount: 10.00 PKR\nCountry: Pakistan`;
+        const buttons = [
+            [{ text: "Accept", callback_data: "accept_recieve_request" }],
+            [{ text: "Decline", callback_data: "decline_recieve_request" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+        const messageLocation = `The above payment request originated from the below address👇\n\nSaquib Enterprises, South Park Avenue, DHA Phase 2 Extension,Saddar Town Karachi District,Karachi Division, Sindh,75500,Pakistan`
+        const buttonsLocation = [
+            [{ text: "View Pin Location📍", callback_data: "view_pin_location" }],
+        ]
+        await sendButtons(chatId, buttonsLocation, messageLocation, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("decline_recieve_request") && payload?.startsWith("decline_recieve_request")) || (payload === "decline_recieve_request")) {
+        console.log("we are in accept recieve request");
+        const message = "You have declined this payment request";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("accept_recieve_request") && payload?.startsWith("accept_recieve_request")) || (payload === "accept_recieve_request")) {
+        console.log("we are in accept recieve request");
+        const message = "Select the payment method you would like to pay with:";
+        const buttons = [
+            [{ text: "Payment Card", callback_data: "accept_payment_card" }],
+            [{ text: "Instapay Wallets", callback_data: "accept_instapay_wallets" }],
+            [{ text: "PayPal", callback_data: "accept_pay_pal" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("accept_instapay_wallets") && payload?.startsWith("accept_instapay_wallets")) || (payload === "accept_instapay_wallets")) {
+        console.log("we are in accept payment card");
+        const message = "Select the wallet currency to be credited.";
+        const buttons = [
+            [{ text: "🇵🇰 PKR", callback_data: "accept_pkr_currency" }],
+            [{ text: "🇪🇺 EUR", callback_data: "accept_eur_currency" }],
+            [{ text: "🇬🇧 GBP", callback_data: "accept_gbp_currency" }],
+            [{ text: "🇮🇳 INR", callback_data: "accept_inr_currency" }],
+            [{ text: "🇦🇪 AED", callback_data: "accept_aed_currency" }],
+            [{ text: "🇵🇭 PHP", callback_data: "accept_php_currency" }],
+            [{ text: "🇦🇷 ARS", callback_data: "accept_ars_currency" }],
+            [{ text: "🇨🇮 XOF", callback_data: "accept_xof_currency" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("accept_pkr_currency") && payload?.startsWith("accept_pkr_currency")) || (payload === "accept_pkr_currency")) {
+        console.log("we are in accept pkr currency");
+        const message = "You currently have 100.00 PKR\n\nProceed or choose a different wallet.";
+        const buttons = [
+            [{ text: "Proceed", callback_data: "proceed_accept_instapay_wallets" }],
+            [{ text: "Another wallet", callback_data: "accept_instapay_wallets" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("proceed_accept_instapay_wallets") && payload?.startsWith("proceed_accept_instapay_wallets")) || (payload === "proceed_accept_instapay_wallets")) {
+        console.log("we are in proceed accept instapay wallets");
+        const message = "Amount to send: 10.00 PKR\n\nFee: 278.93 PKR\n\nRecipent Gets: 10.00 PKR\n\nTotal amount: 283.93 PKR";
+        const buttons = [
+            [{ text: "Yes, continue", callback_data: "Yes_continue_instapay_wallets" }],
+            [{ text: "Cancel", callback_data: "main_menu" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("Yes_continue_instapay_wallets") && payload?.startsWith("Yes_continue_instapay_wallets")) || (payload === "Yes_continue_instapay_wallets")) {
+        console.log("we are in yes continue instapay wallets");
+        const message = "Please enter the code from your authentication app.";
+        const buttons = [
+            [{ text: "Send via SMS/email", callback_data: "send_via_sms_email" }],
+            [{ text: "Asistance Required", callback_data: "asistance_required" }],
+            [{ text: "Cancel", callback_data: "main_menu" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("send_via_sms_email") && payload?.startsWith("send_via_sms_email")) || (payload === "send_via_sms_email")) {
+        console.log("we are in send via sms email");
+        const message = "Please enter the code sent to your registered number or email.";
+        const buttons = [
+            [{ text: "Resend OTP", callback_data: "send_via_sms_email" }],
+            [{ text: "Asistance Required", callback_data: "asistance_required" }],
+            [{ text: "Cancel", callback_data: "main_menu" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ]
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("asistance_required") && payload?.startsWith("asistance_required")) || (payload === "asistance_required")) {
+        console.log("we are in asistance required");
+        const message = "Please let us know how we can assist you today.";
+        const buttons = [
+            [{ text: "Login issues", callback_data: "contact_support" }],
+            [{ text: "Transaction Query", callback_data: "contact_support" }],
+            [{ text: "Profile Setup Help", callback_data: "contact_support" }],
+            [{ text: "Other issues", callback_data: "contact_support" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    else if ((chat.last_message?.startsWith("contact_support") && payload?.startsWith("contact_support")) || (payload === "contact_support")) {
+        console.log("we are in contact support");
+        const message = "One of our representatives will get back to you shortly.";
+        const buttons = [
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+}   

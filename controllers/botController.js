@@ -18,12 +18,31 @@ export const handleUpdates = async (req, res) => {
     let chatId;
     const currentTime = new Date();
 
-    let text_message;
+    let text_message = null;
     let callback_query = null;
+    let image_payloads = [];
+    let video_payloads = [];
 
     if (data.message) {
         text_message = data.message.text || null;
         chatId = data.message.chat.id.toString();
+        if (data.message.photo) {
+            image_payloads = data.message.photo.map(photo => ({
+                file_id: photo.file_id,
+                caption: data.message.caption || null
+            }));
+            // image_payloads = [{ file_id: data.message.photo[0].file_id }];
+            console.log('Image Payloads:', image_payloads);
+        }
+        if (data.message.video) {
+            video_payloads = [{
+                file_id: data.message.video.file_id,
+                caption: data.message.caption || null,
+                mime_type: data.message.video.mime_type
+            }];
+            console.log('Video Payloads:', video_payloads);
+        }
+        
     } else if (data.callback_query) {
         callback_query = data.callback_query.data;
         chatId = data.callback_query.message.chat.id.toString();
@@ -42,8 +61,9 @@ export const handleUpdates = async (req, res) => {
     //  Save new last_message to prevent repeat responses
     if (chat) {
         console.log(text_message, "text chat wala")
-        chat.last_message = text_message || "unknown";
+        chat.last_message = text_message || callback_query || "unknown";
         chat.last_message_time = currentTime;
+        console.log(chat.last_message,"last message")
         await chat.save();
     } else {
         chat = new TelegramBot({
@@ -69,96 +89,7 @@ export const handleUpdates = async (req, res) => {
         registerUser(chatId, callback_query, chat);
     }
 
-    // yahan se
-    // else if ((chat.last_message?.startsWith("initiate_payment")) || (callback_query?.startsWith("initiate_payment")) || (callback_query === "initiate_payment")) {
-    //     console.log("we are in initiate payment");
-    //     const message = "How can I serve you today?🤔👇";
-    //     const buttons = [
-    //         [{ text: "Send Money", callback_data: "send_money" }],
-    //         [{ text: "Request Money", callback_data: "request_money" }],
-    //         [{ text: "Send a Quote", callback_data: "send_a_quote" }],
-    //         [{ text: "Send Crypto", callback_data: "send_crypto" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("send_money")) || (callback_query?.startsWith("send_money")) || (callback_query === "send_money")) {
-    //     console.log("we are in send money");
-    //     const messageInt = "Send Mnoey Internationally to over 130 countries: Security and simplicity for your international transfers.";
-    //     const buttonsInt = [
-    //         [{ text: "International Transfer", callback_data: "international_transfer" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttonsInt, messageInt, "register_0")
-
-    //     const messageWallet = "Wallet to Wallet Transfer: Instantly exchange funds between users.";
-    //     const buttonsWallet = [
-    //         [{ text: "Wallet to Wallet", callback_data: "wallet_to_wallet" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttonsWallet, messageWallet, "register_0")
-
-    //     const messageAirTime = "Secure and fast international mobile top-ups";
-    //     const buttonsAirTime = [
-    //         [{ text: "Mobile airtime", callback_data: "mobile_airtime" }],
-    //     ];
-    //     await sendButtons(chatId, buttonsAirTime, messageAirTime, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("request_money")) || (callback_query?.startsWith("request_money")) || (callback_query === "request_money")) {
-    //     console.log("we are in request money");
-    //     const message = `
-    //                     Who would you like to request money from today?
-    //                     Enter the InstaPay/Instagram username, mobile number, or email, or select from frequently contacted users.
-
-    //                     Please follow these examples:
-
-    //                     👤 InstaPay/Instagram Username: instauser
-    //                     📧 Email: user@email.com
-    //                     📞 Phone Number: 44795396600 (With Country Code)
-    //                     `;
-    //     const buttons = [
-    //         [{ text: "Invite Someone", callback_data: "invite_someone" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("send_a_quote")) || (callback_query?.startsWith("send_a_quote")) || (callback_query === "send_a_quote")) {
-    //     console.log("we are in send a quote");
-    //     const message = "Ready to sendReady to send a quote? Let's get the details right to ensure a smooth transaction.";
-    //     const buttons = [
-    //         [{ text: "Create Quote", callback_data: "create_quote" }],
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("send_crypto")) || (callback_query?.startsWith("send_crypto")) || (callback_query === "send_crypto")) {
-    //     console.log("we are in send crypto");
-    //     const message = "Unlock the future of finance -\n cryptocurrency integration coming soon!";
-    //     const buttons = [
-    //         [{ text: "Main Menu", callback_data: "main_menu" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
-    // // request a money logics here
-    // else if ((chat.last_message?.startsWith("invite_someone")) || (callback_query?.startsWith("invite_someone")) || (callback_query === "invite_someone")) {
-    //     console.log("we are in invite someone");
-    //     const message = "How would you like to invite?\n\nBy: 👇";
-    //     const buttons = [
-    //         [{ text: "📞 Phone Number", callback_data: "phone_number" }],
-    //         [{ text: "📧 Email", callback_data: "email_btn" }],
-    //     ];
-    //     await sendButtons(chatId, buttons, message, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("phone_number")) || (callback_query?.startsWith("phone_number")) || (callback_query === "phone_number")) {
-    //     console.log("we are in phone number");
-    //     const message = "Input your phone number. Example: +923001234567";
-    //     await sendMessage(chatId, message, "register_0")
-    // }
-    // else if ((chat.last_message?.startsWith("email_btn")) || (callback_query?.startsWith("email_btn")) || (callback_query === "email_btn")) {
-    //     console.log("we are in email");
-    //     const message = "Input the email address you want to invite."
-    //     await sendMessage(chatId, message, "register_0")
-    // }
+    // these logic are for the user input
     // // phone number received from user logics here 
     else if (chat.text?.trim().startsWith("+923001234567") || chat.last_message?.trim().includes("+923001234567") || (chat.last_message === "+923001234567")) {
 
@@ -232,6 +163,53 @@ export const handleUpdates = async (req, res) => {
         await sendButtons(chatId, buttons2, message2, "register_0");
         await sendButtons(chatId, buttons3, message3, "register_0");
     }
-
+    else if (chat.last_message?.startsWith("test")  || chat.last_message?.includes("test") || chat.last_message === "test") {
+        console.log("we are in test");
+        const message = "Would you like to attach a document? It can add more context to your transaction. Supported formats: JPEG, PNG, MP4. You can attach up to 5 files in total, including one video file.";
+        const buttons = [
+            [{ text: "Yes", callback_data: "yes_attach_a_document_req" }],
+            [{ text: "No", callback_data: "confirm" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    // else if ((image_payloads.length < 2)) {
+    //     console.log("we are in iniating request");
+    //     const message = "You're initiating a request for 10.00 PKR to M Bilal Ansari\n\nProceed?";
+    //     const buttons = [
+    //         [{ text: "Confirm", callback_data: "confirm" }],
+    //         [{ text: "Main Menu", callback_data: "main_menu" }],
+    //     ];
+    //     await sendButtons(chatId, buttons, message, "register_0")
+    // }
+    
+    else if ((image_payloads.length > 0)) {
+        console.log("we are in instant payment");
+        const message = "Do you wish to attach a note to this payment request?";
+        const buttons = [
+            [{ text: "Yes", callback_data: "add_a_note" }],
+            [{ text: "No", callback_data: "skip" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0");
+    }
+    else if ((chat.last_message?.startsWith("hi") && chat.last_message?.includes("hi")) || (chat.last_message === "hi")) {
+        console.log("we are in skip");
+        const message = "You're initiating a request for 10.00 PKR to M Bilal Ansari\n\nProceed?";
+        const buttons = [
+            [{ text: "Confirm", callback_data: "confirm" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+// OTP logic static
+    else if (chat.last_message?.startsWith("123456") || chat.last_message?.includes("123456") || (chat.last_message === "123456")) {
+        console.log("we are in OTP received");
+        const message = "You have accepted the payment request.\nTransaction ID: tr_123456789";
+        const buttons = [
+            [{ text: "Leave a comment", callback_data: "leave_a_comment" }],
+            [{ text: "Main Menu", callback_data: "main_menu" }],
+        ];
+        await sendButtons(chatId, buttons, message, "register_0")
+    }
+    
     return res.sendStatus(200); // ✅ Respond with 200 OK to prevent Telegram retries
 };
